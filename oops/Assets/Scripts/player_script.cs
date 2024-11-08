@@ -3,66 +3,105 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class player_script : MonoBehaviour
-{ 
+{
     public int jumpDistance = 50;
-    public int cooldown = 100;
+    public int dashCooldown = 100;
     public float speed = 5.0f;
 
-    float angle;
+    public GameObject Bullet;
+    public GameObject Muzzle_One;
+    public GameObject Muzzle_Two;
+
+    public float angle;
 
     Vector3 direction;
     Vector3 mousePos;
     Vector3 object_pos;
+    Vector3 screenBounds;
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        cooldown = 0;
+        dashCooldown = 0;
+        CalculateScreenBoundaries();
+
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
 
-        float hori = Input.GetAxisRaw("Horizontal");
-        float vert = Input.GetAxisRaw("Vertical");
-        
-        
-        
-
-        if(cooldown < 0){
-            cooldown = 0;
-        } 
-        else if (cooldown != 0){
-            cooldown--;
-        } 
+        if (dashCooldown < 0)
+        {
+            dashCooldown = 0;
+        }
+        else if (dashCooldown != 0)
+        {
+            dashCooldown--;
+        }
 
         mousePos = Input.mousePosition;
-        direction = new Vector3(speed * hori * Time.deltaTime, speed * vert * Time.deltaTime);
+
+        //Get player direction and apply force
+        direction = new Vector3(speed * Input.GetAxisRaw("Horizontal") * Time.deltaTime, speed * Input.GetAxisRaw("Vertical") * Time.deltaTime);
         transform.position += direction;
 
-        float posX = Mathf.Clamp(transform.position.x, 0, Screen.width/2);
-        float posY = Mathf.Clamp(transform.position.y, 0, Screen.height/2);
+        //Clamp position to screen borders
+        Vector3 transPos = transform.position;
 
-        transform.position = Camera.main.WorldToScreenPoint((new Vector3(posX, posY, 1f));
+        transPos.x = Mathf.Clamp(transPos.x, screenBounds.x * -1, screenBounds.x);
+        transPos.y = Mathf.Clamp(transPos.y, screenBounds.y * -1, screenBounds.y);
 
-        mousePos.z = 5.23f; //The distance between the camera and object
-	    object_pos = Camera.main.WorldToScreenPoint(transform.position);
+        transform.position = transPos;
+
+        //Get mouse position and point at it
+        object_pos = Camera.main.WorldToScreenPoint(transform.position);
         mousePos.x = mousePos.x - object_pos.x;
-	    mousePos.y = mousePos.y - object_pos.y;
+        mousePos.y = mousePos.y - object_pos.y;
 
         angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
-	    transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
-        if((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (cooldown == 0)){
+
+        //Jump with keyboard
+        if ((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (dashCooldown == 0))
+        {
+            
             transform.position = transform.position + direction * jumpDistance;
-            cooldown = 100;
+            dashCooldown = 100;
         }
 
-        if(Input.GetAxisRaw("Jump") != 0){
-            Debug.Log(Camera.main.WorldToScreenPoint(transform.position));
+        //Jump with mouse
+        if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown == 0))
+        {
+            transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
+            dashCooldown = 100;
         }
+
+        //Change camera size and recalculate boundaries
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Camera.main.orthographicSize += 1;
+            CalculateScreenBoundaries();
+        }
+
+        if (Input.GetAxisRaw("Jump") != 0){
+            Debug.Log("Shootin");
+            shoot();
+        }
+    }
+    
+    void CalculateScreenBoundaries()
+    {
+        screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
+    }
+
+    void shoot(){
+        Instantiate(Bullet, Muzzle_One.transform.position, Muzzle_One.transform.rotation);
+        Instantiate(Bullet, Muzzle_Two.transform.position, Muzzle_Two.transform.rotation);
     }
 }
 

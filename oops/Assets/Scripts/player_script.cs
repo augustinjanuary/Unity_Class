@@ -6,6 +6,7 @@ public class player_script : MonoBehaviour
 {
     public int jumpDistance = 50;
     public int dashCooldown = 100;
+    public int shootCooldown = 10;
     public float speed = 5.0f;
 
     public GameObject Bullet;
@@ -33,14 +34,14 @@ public class player_script : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-
-        if (dashCooldown < 0)
-        {
-            dashCooldown = 0;
-        }
-        else if (dashCooldown != 0)
+        
+        if (dashCooldown > 0)
         {
             dashCooldown--;
+        }
+        if (shootCooldown > 0)
+        {
+            shootCooldown--;
         }
 
         mousePos = Input.mousePosition;
@@ -67,7 +68,7 @@ public class player_script : MonoBehaviour
 
 
         //Jump with keyboard
-        if ((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (dashCooldown == 0))
+        if ((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (dashCooldown <= 0))
         {
             
             transform.position = transform.position + direction * jumpDistance;
@@ -75,7 +76,7 @@ public class player_script : MonoBehaviour
         }
 
         //Jump with mouse
-        if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown == 0))
+        if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown <= 0))
         {
             transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
             dashCooldown = 100;
@@ -88,8 +89,8 @@ public class player_script : MonoBehaviour
             CalculateScreenBoundaries();
         }
 
-        if (Input.GetAxisRaw("Jump") != 0){
-            Debug.Log("Shootin");
+        if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0){
+            shootCooldown = 10;
             shoot();
         }
     }

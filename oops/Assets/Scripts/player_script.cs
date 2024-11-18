@@ -18,7 +18,9 @@ public class player_script : MonoBehaviour
     Vector3 direction;
     Vector3 mousePos;
     Vector3 object_pos;
-    Vector3 screenBounds;
+    public Vector3 screenBounds;
+    public Vector3 negativeBounds;
+    
 
 
 
@@ -27,8 +29,7 @@ public class player_script : MonoBehaviour
     {
         dashCooldown = 0;
         CalculateScreenBoundaries();
-
-
+        negativeBounds = new Vector3(2*screenBounds.x, 2*screenBounds.y, 1f);
     }
 
     // Update is called once per frame
@@ -53,8 +54,9 @@ public class player_script : MonoBehaviour
         //Clamp position to screen borders
         Vector3 transPos = transform.position;
 
-        transPos.x = Mathf.Clamp(transPos.x, screenBounds.x * -1, screenBounds.x);
-        transPos.y = Mathf.Clamp(transPos.y, screenBounds.y * -1, screenBounds.y);
+        transPos.x = Mathf.Clamp(transPos.x, screenBounds.x - negativeBounds.x, screenBounds.x);
+        transPos.y = Mathf.Clamp(transPos.y, screenBounds.y - negativeBounds.y, screenBounds.y);
+        
 
         transform.position = transPos;
 
@@ -93,12 +95,15 @@ public class player_script : MonoBehaviour
             shootCooldown = 10;
             shoot();
         }
+
+        CalculateScreenBoundaries();
     }
     
-    void CalculateScreenBoundaries()
+    public void CalculateScreenBoundaries()
     {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
     }
+
 
     void shoot(){
         Instantiate(Bullet, Muzzle_One.transform.position, Muzzle_One.transform.rotation);

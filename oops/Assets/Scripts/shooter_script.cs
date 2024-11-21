@@ -9,11 +9,12 @@ public class shooter_script : MonoBehaviour
     public float speed = 1f;
     
     public GameObject Player;
+    public GameObject EnemyBullet;
+    public GameObject Muzzle;
     public float distanceBetween;
 
     bool shooting = false;
 
-    // Start is called before the first frame update
     void Start()
     {
         
@@ -22,6 +23,7 @@ public class shooter_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         Vector3 targetPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, 2f);
         transform.LookAt(targetPosition);
 
@@ -41,7 +43,10 @@ public class shooter_script : MonoBehaviour
             speed = Mathf.Abs(speed);
         }
 
-            transform.position += transform.forward * speed * Time.deltaTime;
+        if(Vector3.Distance(targetPosition, transform.position) <= 20f && !shooting){
+            StartCoroutine(shootEnemyBullet());
+        }
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
     
     void OnTriggerEnter(Collider collision){
@@ -51,9 +56,12 @@ public class shooter_script : MonoBehaviour
         }
     }
 
-
-    void shootEnemyBullet(){
-
+    IEnumerator shootEnemyBullet()
+    {
+        shooting = true;
+        yield return new WaitForSeconds(2f);
+        Instantiate(EnemyBullet, Muzzle.transform.position, Muzzle.transform.rotation);
+        yield return new WaitForSeconds(2f);
+        shooting = false; 
     }
-
 }

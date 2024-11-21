@@ -7,6 +7,7 @@ public class player_script : MonoBehaviour
     public int jumpDistance = 50;
     public int dashCooldown = 100;
     public int shootCooldown = 10;
+    public int playerHealth = 100;
     public float speed = 5.0f;
 
     public GameObject Bullet;
@@ -108,6 +109,14 @@ public class player_script : MonoBehaviour
     void shoot(){
         Instantiate(Bullet, Muzzle_One.transform.position, Muzzle_One.transform.rotation);
         Instantiate(Bullet, Muzzle_Two.transform.position, Muzzle_Two.transform.rotation);
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if(collider.tag == "Enemy")
+        {
+            Debug.Log("Ouchies!");
+        }
     }
 }
 

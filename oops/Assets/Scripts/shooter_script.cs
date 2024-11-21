@@ -8,49 +8,49 @@ public class shooter_script : MonoBehaviour
     public float minSpeed = 1.25f;
     public float speed = 1f;
     
-    public GameObject Player;
+    GameObject Player;
     public GameObject EnemyBullet;
     public GameObject Muzzle;
-    public float distanceBetween;
+    
 
     bool shooting = false;
+    bool onCooldown = false;
 
-    void Start()
-    {
-        
+    void Start(){
+        Player = GameObject.FindWithTag("Player");
     }
 
     // Update is called once per frame
     void Update()
     {
        
-        Vector3 targetPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, 2f);
+        Vector3 targetPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, 1f);
         transform.LookAt(targetPosition);
 
-        distanceBetween = Vector3.Distance(targetPosition, transform.position);
+        float distanceBetween = Vector3.Distance(targetPosition, transform.position);
 
-        if(((Vector3.Distance(targetPosition, transform.position) > 7f ||Vector3.Distance(targetPosition, transform.position) < 3f)) && !shooting){
+        if(((distanceBetween > 7f || distanceBetween < 3f)) && !shooting){
             speed = Mathf.MoveTowards(Mathf.Abs(speed), Maxspeed, .1f);
         }
         else{
             speed = Mathf.MoveTowards(Mathf.Abs(speed), minSpeed, .1f);
         }
         
-        if (Vector3.Distance(targetPosition, transform.position) < 5f){
+        if (distanceBetween < 5f){
             speed = -Mathf.Abs(speed);
         }
         else{
             speed = Mathf.Abs(speed);
         }
 
-        if(Vector3.Distance(targetPosition, transform.position) <= 20f && !shooting){
+        if((distanceBetween <= 8f && distanceBetween >= 4f) && !onCooldown){
             StartCoroutine(shootEnemyBullet());
         }
+
         transform.position += transform.forward * speed * Time.deltaTime;
     }
     
     void OnTriggerEnter(Collider collision){
-        Debug.Log("Ouch!");
         if(collision.gameObject.tag == "Bullet"){
             Destroy(gameObject);
         }
@@ -59,9 +59,11 @@ public class shooter_script : MonoBehaviour
     IEnumerator shootEnemyBullet()
     {
         shooting = true;
+        onCooldown = true;
         yield return new WaitForSeconds(2f);
         Instantiate(EnemyBullet, Muzzle.transform.position, Muzzle.transform.rotation);
+        shooting = false;
         yield return new WaitForSeconds(2f);
-        shooting = false; 
+        onCooldown = false;
     }
 }

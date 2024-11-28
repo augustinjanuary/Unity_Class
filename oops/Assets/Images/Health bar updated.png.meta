@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9619947029e3fb24a82be1213fc82548
+guid: db0ad5fb44e7803478ebee3cd6163812
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,22 +110,43 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Basic Button
+      name: HealthBar Border
       rect:
         serializedVersion: 2
-        x: 41
-        y: 710
-        width: 662
-        height: 255
+        x: 54
+        y: 758
+        width: 916
+        height: 212
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 805c50d769ebc9c4abb0724e0ad1f8e0
-      internalID: -640049140
+      spriteID: 2310ae72862506347aa5bf839068afa1
+      internalID: -1747565392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health Bar
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 570
+        width: 832
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c31b3e59e96d31d4cb0897f494c01053
+      internalID: 763772311
       vertices: []
       indices: 
       edges: []
@@ -133,7 +154,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 95affd79a6b4a0b478f5849c771f49eb
+    spriteID: 6dff7d5cac3aecb4f89c85922fd9a83e
     internalID: 0
     vertices: []
     indices: 
@@ -141,7 +162,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Basic Button: -640049140
+      Health Bar: 763772311
+      HealthBar Border: -1747565392
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -43,8 +43,8 @@ GameObject:
   - component: {fileID: 6936558717296588664}
   - component: {fileID: 309273468315049836}
   - component: {fileID: 5601134930109101490}
-  - component: {fileID: 3072394209635764230}
   - component: {fileID: 8852392453879637882}
+  - component: {fileID: 3072394209635764230}
   m_Layer: 0
   m_Name: Shooter
   m_TagString: Enemy
@@ -61,7 +61,7 @@ Transform:
   m_GameObject: {fileID: 6723046265069118827}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.42, y: 1.47, z: 2}
+  m_LocalPosition: {x: 3.42, y: 1.47, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -139,25 +139,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3072394209635764230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6723046265069118827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe7175b6aa5f4664992edcb5b7601dfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Maxspeed: 3
-  minSpeed: 1
-  speed: 1
-  Player: {fileID: 0}
-  EnemyBullet: {fileID: 0}
-  Muzzle: {fileID: 954411475146531367}
-  distanceBetween: 0
 --- !u!54 &8852392453879637882
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -185,3 +166,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 56
   m_CollisionDetection: 0
+--- !u!114 &3072394209635764230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6723046265069118827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe7175b6aa5f4664992edcb5b7601dfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Maxspeed: 3
+  minSpeed: 1
+  speed: 1
+  EnemyBullet: {fileID: 2932350105360764163, guid: 5a831bd727fbd3b46a852f411c5dde95, type: 3}
+  Muzzle: {fileID: 954411475146531367}
+  DeathEffects: {fileID: 1758320389217124572, guid: aed6fe7dcb9c52d4595d5c0595ca6e63, type: 3}

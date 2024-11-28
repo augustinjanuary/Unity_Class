@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+
 
 public class player_script : MonoBehaviour
 {
@@ -10,9 +14,12 @@ public class player_script : MonoBehaviour
     public int playerHealth = 100;
     public float speed = 5.0f;
 
+
     public GameObject Bullet;
     public GameObject Muzzle_One;
     public GameObject Muzzle_Two;
+    GameObject HealthBar;
+    GameObject HealthBarValue;
 
     public float angle;
 
@@ -28,9 +35,20 @@ public class player_script : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        HealthBar = GameObject.FindWithTag("HealthBar");
+        HealthBarValue = GameObject.FindWithTag("HealthBarValue");
+
         dashCooldown = 0;
-        CalculateScreenBoundaries();
-        negativeBounds = new Vector3(2*screenBounds.x, 2*screenBounds.y, 1f);
+        if (SceneManager.GetActiveScene().name == "Initial Scene"){
+            Camera.main.orthographicSize = 5f;
+            CalculateScreenBoundaries();
+        }
+        else {
+            Camera.main.orthographicSize = 8.9f;
+            CalculateScreenBoundaries();
+            Camera.main.orthographicSize = 7f;
+            StartCoroutine(drainHealth());
+        }
     }
 
     // Update is called once per frame
@@ -55,8 +73,8 @@ public class player_script : MonoBehaviour
         //Clamp position to screen borders
         Vector3 transPos = transform.position;
 
-        transPos.x = Mathf.Clamp(transPos.x, screenBounds.x - negativeBounds.x, screenBounds.x);
-        transPos.y = Mathf.Clamp(transPos.y, screenBounds.y - negativeBounds.y, screenBounds.y);
+        transPos.x = Mathf.Clamp(transPos.x, -screenBounds.x, screenBounds.x);
+        transPos.y = Mathf.Clamp(transPos.y, -screenBounds.y, screenBounds.y);
         
 
         transform.position = transPos;
@@ -85,19 +103,12 @@ public class player_script : MonoBehaviour
             dashCooldown = 100;
         }
 
-        //Change camera size and recalculate boundaries
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Camera.main.orthographicSize += 1;
-            CalculateScreenBoundaries();
-        }
-
         if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0){
             shootCooldown = 10;
             shoot();
         }
-
-        CalculateScreenBoundaries();
+        HealthBar.GetComponent<Image>().fillAmount = (float)playerHealth/100;
+        HealthBarValue.GetComponent<TMP_Text>().text = playerHealth.ToString();
     }
     
     public void CalculateScreenBoundaries()
@@ -113,10 +124,16 @@ public class player_script : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        if(collider.tag == "Enemy")
+        if((collider.tag == "Enemy") || (collider.tag == "EnemyBullet"))
         {
-            Debug.Log("Ouchies!");
+            playerHealth -= 10;
         }
+    }
+
+    IEnumerator drainHealth(){
+        yield return new WaitForSeconds(2f);
+        playerHealth -=1;
+        StartCoroutine(drainHealth());
     }
 }
 

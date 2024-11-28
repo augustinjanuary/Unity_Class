@@ -9,8 +9,10 @@ public class shooter_script : MonoBehaviour
     public float speed = 1f;
     
     GameObject Player;
+    GameObject GM;
     public GameObject EnemyBullet;
     public GameObject Muzzle;
+    public GameObject DeathEffects;
     
 
     bool shooting = false;
@@ -18,6 +20,7 @@ public class shooter_script : MonoBehaviour
 
     void Start(){
         Player = GameObject.FindWithTag("Player");
+        GM = GameObject.FindWithTag("GameController");
     }
 
     // Update is called once per frame
@@ -52,6 +55,8 @@ public class shooter_script : MonoBehaviour
     
     void OnTriggerEnter(Collider collision){
         if(collision.gameObject.tag == "Bullet"){
+            GM.GetComponent<game_master_script>().score += 100;
+            Instantiate(DeathEffects, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

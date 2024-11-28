@@ -6,12 +6,17 @@ using UnityEngine;
 public class camera_script : MonoBehaviour
 {
     public GameObject player;
-    public float yBorderHeight = 3.9f;
+    public GameObject backgroundTransform;
+    public float BorderHeight = 2f;
+    public float BorderWidth = 2f;
+
 
     void Start(){
+       Transform backgroundTransform = gameObject.GetComponentInParent<Transform>(); 
+       Debug.Log(gameObject.GetComponent<Camera>().orthographicSize - (backgroundTransform.transform.localScale.y ));
     }
 
     void Update(){
-        transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, -5.9f, 5.9f), Mathf.Clamp(player.transform.position.y, -yBorderHeight, yBorderHeight), 0);
+        transform.position = new Vector3(Mathf.Clamp(player.transform.position.x, -BorderWidth, BorderWidth), Mathf.Clamp(player.transform.position.y, -BorderHeight, BorderHeight), -3f);
     }
 }

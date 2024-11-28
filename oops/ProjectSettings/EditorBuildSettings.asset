@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Splash Screen.unity
     guid: 576c61b8b49ccf344b3b31db7c2d1557
+  - enabled: 1
+    path: Assets/Scenes/Initial Scene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Moving camera scene.unity
+    guid: ecedf40af9d0c13459b6c152ff4107eb
   m_configObjects: {}

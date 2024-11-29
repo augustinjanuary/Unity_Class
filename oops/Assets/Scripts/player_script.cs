@@ -18,6 +18,9 @@ public class player_script : MonoBehaviour
     public GameObject Bullet;
     public GameObject Muzzle_One;
     public GameObject Muzzle_Two;
+    public GameObject[] TP_point = new GameObject[3];
+    //1 is poof, 2 is line
+    public GameObject[] TP_effects = new GameObject[2];
     GameObject HealthBar;
     GameObject HealthBarValue;
 
@@ -91,8 +94,11 @@ public class player_script : MonoBehaviour
         //Jump with keyboard
         if ((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (dashCooldown <= 0))
         {
-            
+            Instantiate(TP_effects[0], transform.position, Quaternion.identity);
             transform.position = transform.position + direction * jumpDistance;
+            Instantiate(TP_effects[1], TP_point[0].transform.position, Quaternion.Euler(direction));
+            Instantiate(TP_effects[1], TP_point[1].transform.position, transform.rotation);
+            Instantiate(TP_effects[1], TP_point[2].transform.position, transform.rotation);
             dashCooldown = 100;
         }
 

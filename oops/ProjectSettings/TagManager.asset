@@ -9,6 +9,7 @@ TagManager:
   - ScoreValue
   - HealthBar
   - HealthBarValue
+  - EnemyBullet
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Post-Processing
   - 
   - 
   - 

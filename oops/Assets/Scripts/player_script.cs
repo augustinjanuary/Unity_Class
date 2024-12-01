@@ -55,6 +55,7 @@ public class player_script : MonoBehaviour
         }
         for (int i = 0; i < TP_point_magnitudes.Length; i++)
         {
+//localPosition instead?
             TP_point_magnitudes[i] = -TP_point[i].transform.position.magnitude;
         }
         Debug.Log(TP_point_magnitudes[0]);

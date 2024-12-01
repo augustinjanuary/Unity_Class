@@ -30,8 +30,8 @@ public class game_master_script : MonoBehaviour
         _player = GameObject.FindWithTag("Player");
         score_value = GameObject.FindWithTag("ScoreValue");
 
-        xBorder = _player.GetComponent<player_script>().screenBounds.x;
-        yBorder = _player.GetComponent<player_script>().screenBounds.y;
+        xBorder = _player.GetComponent<player_script>().screenBounds.x + 5;
+        yBorder = _player.GetComponent<player_script>().screenBounds.y + 5;
     }
 
     // Update is called once per frame

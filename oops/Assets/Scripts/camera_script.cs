@@ -13,7 +13,6 @@ public class camera_script : MonoBehaviour
 
     void Start(){
        Transform backgroundTransform = gameObject.GetComponentInParent<Transform>(); 
-       Debug.Log(gameObject.GetComponent<Camera>().orthographicSize - (backgroundTransform.transform.localScale.y ));
     }
 
     void Update(){

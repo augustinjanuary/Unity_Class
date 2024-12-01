@@ -13,6 +13,7 @@ public class player_script : MonoBehaviour
     public int shootCooldown = 10;
     public int playerHealth = 100;
     public float speed = 5.0f;
+    private float [] TP_point_magnitudes = new float[3];
 
 
     public GameObject Bullet;
@@ -52,6 +53,11 @@ public class player_script : MonoBehaviour
             Camera.main.orthographicSize = 7f;
             StartCoroutine(drainHealth());
         }
+        for (int i = 0; i < TP_point_magnitudes.Length; i++)
+        {
+            TP_point_magnitudes[i] = -TP_point[i].transform.position.magnitude;
+        }
+        Debug.Log(TP_point_magnitudes[0]);
     }
 
     // Update is called once per frame
@@ -94,11 +100,24 @@ public class player_script : MonoBehaviour
         //Jump with keyboard
         if ((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (dashCooldown <= 0))
         {
+            for (int i = 0; i < TP_point_magnitudes.Length; i++)
+            {
+                TP_point[i].transform.position = TP_point_magnitudes[i] * direction.normalized;
+            }
+
+            Debug.Log(TP_point[0].transform.position);
+            Debug.Log(TP_point_magnitudes[0]);
+            Debug.Log(direction.normalized);
+
+
+
             Instantiate(TP_effects[0], transform.position, Quaternion.identity);
             transform.position = transform.position + direction * jumpDistance;
-            Instantiate(TP_effects[1], TP_point[0].transform.position, Quaternion.Euler(direction));
-            Instantiate(TP_effects[1], TP_point[1].transform.position, transform.rotation);
-            Instantiate(TP_effects[1], TP_point[2].transform.position, transform.rotation);
+            TP_point[0].transform.position = TP_point[0].transform.position + direction;
+
+            Instantiate(TP_effects[1], TP_point[0].transform.position, Quaternion.Euler(0, 0, -(Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg)));
+            //Instantiate(TP_effects[1], TP_point[1].transform.position, transform.rotation);
+            //Instantiate(TP_effects[1], TP_point[2].transform.position, transform.rotation);
             dashCooldown = 100;
         }
 

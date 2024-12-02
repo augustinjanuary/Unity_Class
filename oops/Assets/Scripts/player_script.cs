@@ -55,8 +55,7 @@ public class player_script : MonoBehaviour
         }
         for (int i = 0; i < TP_point_magnitudes.Length; i++)
         {
-//localPosition instead?
-            TP_point_magnitudes[i] = -TP_point[i].transform.position.magnitude;
+            TP_point_magnitudes[i] = -TP_point[i].transform.localPosition.magnitude;
         }
         Debug.Log(TP_point_magnitudes[0]);
     }
@@ -114,7 +113,7 @@ public class player_script : MonoBehaviour
 
             Instantiate(TP_effects[0], transform.position, Quaternion.identity);
             transform.position = transform.position + direction * jumpDistance;
-            TP_point[0].transform.position = TP_point[0].transform.position + direction;
+            TP_point[0].transform.position = transform.position + (Vector3.Normalize(direction) * TP_point_magnitudes[0]);
 
             Instantiate(TP_effects[1], TP_point[0].transform.position, Quaternion.Euler(0, 0, -(Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg)));
             //Instantiate(TP_effects[1], TP_point[1].transform.position, transform.rotation);
@@ -125,8 +124,13 @@ public class player_script : MonoBehaviour
         //Jump with mouse
         if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown <= 0))
         {
+            Instantiate(TP_effects[0], transform.position, Quaternion.identity);
             transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
             dashCooldown = 100;
+
+            Instantiate(TP_effects[1], TP_point[0].transform.position, transform.rotation);
+
+
         }
 
         if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0){

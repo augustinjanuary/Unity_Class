@@ -35,7 +35,6 @@ public class player_script : MonoBehaviour
     
 
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -97,29 +96,7 @@ public class player_script : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
 
-        //Jump with keyboard
-        if ((Input.GetAxisRaw("Fire3") != 0) && (direction != Vector3.zero) && (dashCooldown <= 0))
-        {
-            for (int i = 0; i < TP_point_magnitudes.Length; i++)
-            {
-                TP_point[i].transform.position = TP_point_magnitudes[i] * direction.normalized;
-            }
-
-            Debug.Log(TP_point[0].transform.position);
-            Debug.Log(TP_point_magnitudes[0]);
-            Debug.Log(direction.normalized);
-
-
-
-            Instantiate(TP_effects[0], transform.position, Quaternion.identity);
-            transform.position = transform.position + direction * jumpDistance;
-            TP_point[0].transform.position = transform.position + (Vector3.Normalize(direction) * TP_point_magnitudes[0]);
-
-            Instantiate(TP_effects[1], TP_point[0].transform.position, Quaternion.Euler(0, 0, -(Mathf.Atan2(direction.x, direction.y) * Mathf.Rad2Deg)));
-            //Instantiate(TP_effects[1], TP_point[1].transform.position, transform.rotation);
-            //Instantiate(TP_effects[1], TP_point[2].transform.position, transform.rotation);
-            dashCooldown = 100;
-        }
+       
 
         //Jump with mouse
         if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown <= 0))
@@ -128,14 +105,16 @@ public class player_script : MonoBehaviour
             transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
             dashCooldown = 100;
 
-            Instantiate(TP_effects[1], TP_point[0].transform.position, transform.rotation);
-
-
+            var main = TP_effects[1].GetComponent<ParticleSystem>().main;
+            main.startRotation = angle;
+            for(int i = 0; i < TP_point.Length; i++){
+                Instantiate(TP_effects[1], TP_point[i].transform.position, transform.rotation);
+            }
         }
 
         if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0){
             shootCooldown = 10;
-            shoot();
+            shoot();    
         }
         HealthBar.GetComponent<Image>().fillAmount = (float)playerHealth/100;
         HealthBarValue.GetComponent<TMP_Text>().text = playerHealth.ToString();

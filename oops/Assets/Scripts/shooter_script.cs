@@ -7,6 +7,7 @@ public class shooter_script : MonoBehaviour
     public float Maxspeed = 3f;
     public float minSpeed = 1.25f;
     public float speed = 1f;
+    public int healthPoints = 3;
     
     GameObject Player;
     GameObject GM;
@@ -21,6 +22,7 @@ public class shooter_script : MonoBehaviour
     void Start(){
         Player = GameObject.FindWithTag("Player");
         GM = GameObject.FindWithTag("GameController");
+
     }
 
     // Update is called once per frame
@@ -51,13 +53,19 @@ public class shooter_script : MonoBehaviour
         }
 
         transform.position += transform.forward * speed * Time.deltaTime;
+
+        if (healthPoints <= 0)
+        {
+            GM.GetComponent<game_master_script>().IncreaseScore(100);
+            Instantiate(DeathEffects, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
     
     void OnTriggerEnter(Collider collision){
         if(collision.gameObject.tag == "Bullet"){
-            GM.GetComponent<game_master_script>().score += 100;
-            Instantiate(DeathEffects, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            healthPoints--;
+            Destroy(collision.gameObject);
         }
     }
 
@@ -65,7 +73,7 @@ public class shooter_script : MonoBehaviour
     {
         shooting = true;
         onCooldown = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         Instantiate(EnemyBullet, Muzzle.transform.position, Muzzle.transform.rotation);
         shooting = false;
         yield return new WaitForSeconds(2f);

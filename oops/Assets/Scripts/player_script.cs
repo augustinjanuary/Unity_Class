@@ -4,24 +4,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
-
+using Unity.VisualScripting;
 
 public class player_script : MonoBehaviour
 {
     public int jumpDistance = 50;
-    public int dashCooldown = 100;
+    public int dashCooldownLength = 100;
+    public int dashCooldown = 0;
     public int shootCooldown = 10;
     public int playerHealth = 100;
     public float speed = 5.0f;
-    private float [] TP_point_magnitudes = new float[3];
 
+    public TrailRenderer[] tr = new TrailRenderer[3];
 
     public GameObject Bullet;
     public GameObject Muzzle_One;
     public GameObject Muzzle_Two;
-    public GameObject[] TP_point = new GameObject[3];
-    //1 is poof, 2 is line
-    public GameObject[] TP_effects = new GameObject[2];
+    public GameObject TP_effect;
     GameObject HealthBar;
     GameObject HealthBarValue;
 
@@ -32,7 +31,7 @@ public class player_script : MonoBehaviour
     Vector3 object_pos;
     public Vector3 screenBounds;
     public Vector3 negativeBounds;
-    
+
 
 
     // Start is called before the first frame update
@@ -42,7 +41,7 @@ public class player_script : MonoBehaviour
         HealthBarValue = GameObject.FindWithTag("HealthBarValue");
 
         dashCooldown = 0;
-        if (SceneManager.GetActiveScene().name == "Initial Scene"){
+        if (SceneManager.GetActiveScene().name == "Initial Scene") {
             Camera.main.orthographicSize = 5f;
             CalculateScreenBoundaries();
         }
@@ -52,17 +51,13 @@ public class player_script : MonoBehaviour
             Camera.main.orthographicSize = 7f;
             StartCoroutine(drainHealth());
         }
-        for (int i = 0; i < TP_point_magnitudes.Length; i++)
-        {
-            TP_point_magnitudes[i] = -TP_point[i].transform.localPosition.magnitude;
-        }
-        Debug.Log(TP_point_magnitudes[0]);
+        
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        
+
         if (dashCooldown > 0)
         {
             dashCooldown--;
@@ -83,7 +78,7 @@ public class player_script : MonoBehaviour
 
         transPos.x = Mathf.Clamp(transPos.x, -screenBounds.x, screenBounds.x);
         transPos.y = Mathf.Clamp(transPos.y, -screenBounds.y, screenBounds.y);
-        
+
 
         transform.position = transPos;
 
@@ -96,47 +91,61 @@ public class player_script : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
 
-       
 
-        //Jump with mouse
+        //Jump with mouse 1
         if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown <= 0))
         {
-            Instantiate(TP_effects[0], transform.position, Quaternion.identity);
+
+            StartCoroutine(teleportAnimation());
+            Instantiate(TP_effect, transform.position, Quaternion.identity);
+
             transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
-            dashCooldown = 100;
+            dashCooldown = dashCooldownLength;
+            Instantiate(TP_effect, transform.position, Quaternion.identity);
 
-            var main = TP_effects[1].GetComponent<ParticleSystem>().main;
-            main.startRotation = angle;
-            for(int i = 0; i < TP_point.Length; i++){
-                Instantiate(TP_effects[1], TP_point[i].transform.position, transform.rotation);
-            }
+
         }
 
-        if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0){
+        if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0) {
             shootCooldown = 10;
-            shoot();    
+            shoot();
         }
-        HealthBar.GetComponent<Image>().fillAmount = (float)playerHealth/100;
+        HealthBar.GetComponent<Image>().fillAmount = (float)playerHealth / 100;
         HealthBarValue.GetComponent<TMP_Text>().text = playerHealth.ToString();
     }
-    
+
     public void CalculateScreenBoundaries()
     {
         screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 1f));
     }
 
 
-    void shoot(){
+    void shoot() {
         Instantiate(Bullet, Muzzle_One.transform.position, Muzzle_One.transform.rotation);
         Instantiate(Bullet, Muzzle_Two.transform.position, Muzzle_Two.transform.rotation);
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        if((collider.tag == "Enemy") || (collider.tag == "EnemyBullet"))
+        if ((collider.tag == "Enemy") || (collider.tag == "EnemyBullet") || (collider.tag == "Bomber"))
         {
             playerHealth -= 10;
         }
+    }
+
+    IEnumerator teleportAnimation()
+    {
+        for(int i = 0; i < tr.Length; i++)
+        {
+            tr[i].emitting=true;
+        }
+        yield return new WaitForSeconds(.1f);
+        for (int i = 0; i < tr.Length; i++)
+        {
+            tr[i].emitting = false;
+           // tr[i].Clear();
+        }
+        
     }
 
     IEnumerator drainHealth(){

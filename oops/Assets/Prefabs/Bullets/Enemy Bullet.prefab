@@ -101,7 +101,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -119,8 +119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7fb1b36ede6f9418f31bfbb557ed67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  timeTilDespawn: 2.5
+  speed: 5
+  timeTilDespawn: 10
+  direction: {x: 0, y: -1, z: 0}
 --- !u!54 &5409783044896607917
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,5 +147,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 120
   m_CollisionDetection: 0

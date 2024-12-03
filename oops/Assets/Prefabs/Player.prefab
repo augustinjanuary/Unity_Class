@@ -262,6 +262,7 @@ MonoBehaviour:
   angle: 0
   screenBounds: {x: 0, y: 0, z: 0}
   negativeBounds: {x: 0, y: 0, z: 0}
+  playerHealth: 0
 --- !u!1 &4709879314420262709
 GameObject:
   m_ObjectHideFlags: 0

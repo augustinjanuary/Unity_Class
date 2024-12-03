@@ -96,7 +96,7 @@ public class player_script : MonoBehaviour
 
 
 
-        //Jump with mouse 1
+        //Teleport
         if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown <= 0))
         {
 
@@ -105,7 +105,6 @@ public class player_script : MonoBehaviour
 
             transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
             dashCooldown = dashCooldownLength;
-            Instantiate(TP_effect, transform.position, Quaternion.identity);
 
 
         }

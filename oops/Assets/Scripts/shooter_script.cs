@@ -11,10 +11,13 @@ public class shooter_script : MonoBehaviour
     
     GameObject Player;
     GameObject GM;
+
     public GameObject EnemyBullet;
     public GameObject Muzzle;
     public GameObject DeathEffects;
-    
+    public GameObject HPpickup;
+
+    public SOscore HpDroprate;
 
     bool shooting = false;
     bool onCooldown = false;
@@ -58,6 +61,12 @@ public class shooter_script : MonoBehaviour
         {
             GM.GetComponent<game_master_script>().IncreaseScore(100);
             Instantiate(DeathEffects, transform.position, Quaternion.identity);
+
+            if (Random.Range(0, HpDroprate.oddsOfDrop) == 1)
+            {
+                Instantiate(HPpickup, transform.position, Quaternion.identity);
+            }
+
             Destroy(gameObject);
         }
     }

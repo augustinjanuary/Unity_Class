@@ -246,11 +246,13 @@ MonoBehaviour:
   healthPoints: 7
   Bullet: {fileID: 2932350105360764163, guid: 9cf0e48ec29a98440a7b359b193e1bd2, type: 3}
   DeathEffects: {fileID: 1758320389217124572, guid: aed6fe7dcb9c52d4595d5c0595ca6e63, type: 3}
+  HPpickup: {fileID: 883472774253160520, guid: f002714d30c235d4b954798dde845956, type: 3}
   EXP_point:
   - {fileID: 2305334945902272815}
   - {fileID: 6321861427009973446}
   - {fileID: 462561926842630748}
   - {fileID: 8734405562408403885}
+  HpDroprate: {fileID: 11400000, guid: 8534af6d1d044ba41a86782f5c20c122, type: 2}
 --- !u!1 &7234300271436105191
 GameObject:
   m_ObjectHideFlags: 0

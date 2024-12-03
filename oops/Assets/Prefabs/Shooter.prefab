@@ -185,3 +185,5 @@ MonoBehaviour:
   EnemyBullet: {fileID: 2932350105360764163, guid: 5a831bd727fbd3b46a852f411c5dde95, type: 3}
   Muzzle: {fileID: 954411475146531367}
   DeathEffects: {fileID: 1758320389217124572, guid: aed6fe7dcb9c52d4595d5c0595ca6e63, type: 3}
+  HPpickup: {fileID: 883472774253160520, guid: f002714d30c235d4b954798dde845956, type: 3}
+  HpDroprate: {fileID: 11400000, guid: 8534af6d1d044ba41a86782f5c20c122, type: 2}

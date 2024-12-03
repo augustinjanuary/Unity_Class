@@ -10,8 +10,11 @@ public class bomber_script : MonoBehaviour
 
     public GameObject Bullet;
     public GameObject DeathEffects;
+    public GameObject HPpickup;
 
     public Transform[] EXP_point = new Transform[4];
+
+    public SOscore HpDroprate;
 
     GameObject Player;
     GameObject GM;
@@ -74,6 +77,10 @@ public class bomber_script : MonoBehaviour
     void die()
     {
         Instantiate(DeathEffects, transform.position, Quaternion.identity);
+        if(Random.Range(0, HpDroprate.oddsOfDrop) == 1)
+        {
+            Instantiate(HPpickup, transform.position, Quaternion.identity);
+        }
         Destroy(gameObject);
     }
 }

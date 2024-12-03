@@ -8,11 +8,12 @@ using Unity.VisualScripting;
 
 public class player_script : MonoBehaviour
 {
+    public SOscore scoreScript;
+
     public int jumpDistance = 50;
     public int dashCooldownLength = 100;
     public int dashCooldown = 0;
     public int shootCooldown = 10;
-    public int playerHealth = 100;
     public float speed = 5.0f;
 
     public TrailRenderer[] tr = new TrailRenderer[3];
@@ -32,11 +33,13 @@ public class player_script : MonoBehaviour
     public Vector3 screenBounds;
     public Vector3 negativeBounds;
 
-
+    public int playerHealth;
 
     // Start is called before the first frame update
     void Start()
     {
+        playerHealth = scoreScript.health;
+
         HealthBar = GameObject.FindWithTag("HealthBar");
         HealthBarValue = GameObject.FindWithTag("HealthBarValue");
 
@@ -57,6 +60,7 @@ public class player_script : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        scoreScript.health = playerHealth;
 
         if (dashCooldown > 0)
         {

@@ -11,7 +11,6 @@ public class game_master_script : MonoBehaviour
     public GameObject[] NPCs = new GameObject[3];
     GameObject score_value;
     public float xBorder, yBorder;
-    public float score = 0f;
     public float rateOfEnemies = 2f;
     public int points = 3;
     string scene;
@@ -21,11 +20,13 @@ public class game_master_script : MonoBehaviour
     bool bomber = false;
     bool increasedPoints = false;
 
+    public SOscore score;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        if(SceneManager.GetActiveScene().name == "Initial Scene"){
+        if(SceneManager.GetActiveScene().buildIndex == 1){
             scene = "Moving camera scene";
             InvokeRepeating("InitialSpawnEnemy", 2f, 2f);
         } 
@@ -45,7 +46,7 @@ public class game_master_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        score_value.GetComponent<TMP_Text>().text = score.ToString();
+        score_value.GetComponent<TMP_Text>().text = score.value.ToString();
 
         if(Input.GetKeyDown(KeyCode.Escape)){
             SceneManager.LoadScene(scene);
@@ -54,7 +55,7 @@ public class game_master_script : MonoBehaviour
 
     void InitialSpawnEnemy(){
         Vector3 pos = new Vector3(Random.Range(-xBorder, xBorder), yBorder, 1f);
-        Instantiate(NPCs[0], pos, Quaternion.identity);
+        Instantiate(NPCs[1], pos, Quaternion.identity);
     }
 
     void MovementSpawnEnemy(int index){
@@ -76,27 +77,27 @@ public class game_master_script : MonoBehaviour
         Instantiate(NPCs[index], pos, Quaternion.identity, gameObject.transform);
     }
 
-    public void IncreaseScore(int value) {
-        score += value;
+    public void IncreaseScore(int valueToAdd) {
+        score.value += valueToAdd;
 
-        if (score > 1000 && !bomber)
+        if (score.value > 3000 && !bomber)
         {
             availableEnemys = 2;
             MovementSpawnEnemy(2);
             bomber = true;
         }
-        else if (score > 500 && !shooter)
+        else if (score.value > 2500 && !shooter)
         {
             availableEnemys = 1;
             MovementSpawnEnemy(1);
             shooter = true;
         }
-        else if (score > 500 && increasedPoints && score % 500 == 0)
+        else if (score.value > 500 && increasedPoints && score.value % 500 == 0)
         {
             rateOfEnemies -= 0.1f;
             increasedPoints = false;
         }
-        else if (score > 500 && !increasedPoints && score % 500 == 0)
+        else if (score.value > 500 && !increasedPoints && score.value % 500 == 0)
         {
             points++;
             increasedPoints = true;

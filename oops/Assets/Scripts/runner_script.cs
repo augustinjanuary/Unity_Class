@@ -8,6 +8,10 @@ public class enemy_script : MonoBehaviour
     public float maxSpeed = 5f;
     public int healthPoints = 3;
 
+    public SOscore HpDroprate;
+
+    public GameObject HPpickup;
+
     GameObject Player;
     Rigidbody rbody;
     GameObject GM;
@@ -32,7 +36,13 @@ public class enemy_script : MonoBehaviour
         if(healthPoints <= 0)
         {
             GM.GetComponent<game_master_script>().IncreaseScore(100);
-            Destroy(gameObject);            
+            Destroy(gameObject);
+
+            if (Random.Range(0, HpDroprate.oddsOfDrop) == 1)
+            {
+                Instantiate(HPpickup, transform.position, Quaternion.identity);
+            }
+
         }
     }
 

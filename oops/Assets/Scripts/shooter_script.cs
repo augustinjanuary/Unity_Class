@@ -17,6 +17,8 @@ public class shooter_script : MonoBehaviour
     public GameObject DeathEffects;
     public GameObject HPpickup;
 
+    ParticleSystem ChargeUpEffect;
+
     public SOscore HpDroprate;
 
     bool shooting = false;
@@ -25,7 +27,7 @@ public class shooter_script : MonoBehaviour
     void Start(){
         Player = GameObject.FindWithTag("Player");
         GM = GameObject.FindWithTag("GameController");
-
+        ChargeUpEffect = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -62,7 +64,7 @@ public class shooter_script : MonoBehaviour
             GM.GetComponent<game_master_script>().IncreaseScore(100);
             Instantiate(DeathEffects, transform.position, Quaternion.identity);
 
-            if (Random.Range(0, HpDroprate.oddsOfDrop) == 1)
+            if (Random.Range(0, HpDroprate.oddsOfDrop) == 0)
             {
                 Instantiate(HPpickup, transform.position, Quaternion.identity);
             }
@@ -80,11 +82,14 @@ public class shooter_script : MonoBehaviour
 
     IEnumerator shootEnemyBullet()
     {
+        var emission = ChargeUpEffect.emission;
         shooting = true;
         onCooldown = true;
+        emission.enabled = true;
         yield return new WaitForSeconds(1f);
         Instantiate(EnemyBullet, Muzzle.transform.position, Muzzle.transform.rotation);
         shooting = false;
+        emission.enabled = false;
         yield return new WaitForSeconds(2f);
         onCooldown = false;
     }

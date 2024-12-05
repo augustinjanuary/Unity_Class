@@ -7,10 +7,12 @@ public class bomber_script : MonoBehaviour
 
     float speed = 1f;
     public int healthPoints = 5;
+    public float rotateSpeed = .1f;
 
     public GameObject Bullet;
     public GameObject DeathEffects;
     public GameObject HPpickup;
+    public GameObject Shield;
 
     public Transform[] EXP_point = new Transform[4];
 
@@ -25,9 +27,10 @@ public class bomber_script : MonoBehaviour
     {
         Player = GameObject.FindWithTag("Player");
         GM = GameObject.FindWithTag("GameController");
+        InvokeRepeating("shieldAnimation", 0.1f, .1f);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         Vector3 targetPosition = new Vector3(Player.transform.position.x, Player.transform.position.y, 1f);
@@ -72,6 +75,12 @@ public class bomber_script : MonoBehaviour
         }
         bulletScript.speed = baseSpeed;
         die();
+    }
+    
+    void shieldAnimation()
+    {
+        transform.Rotate(0f, 0f, rotateSpeed);
+        
     }
 
     void die()

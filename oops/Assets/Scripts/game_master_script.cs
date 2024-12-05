@@ -13,6 +13,8 @@ public class game_master_script : MonoBehaviour
     public float xBorder, yBorder;
     public float rateOfEnemies = 2f;
     public int points = 3;
+    public int roundScore = 1;
+
     string scene;
     int availableEnemys = 0;
 
@@ -85,22 +87,26 @@ public class game_master_script : MonoBehaviour
             availableEnemys = 2;
             MovementSpawnEnemy(2);
             bomber = true;
+            roundScore++;
         }
         else if (score.value > 2500 && !shooter)
         {
             availableEnemys = 1;
             MovementSpawnEnemy(1);
             shooter = true;
+            roundScore++;
         }
-        else if (score.value > 500 && increasedPoints && score.value % 500 == 0)
+        else if (score.value > 500 && increasedPoints && score.value >= roundScore*2000)
         {
             rateOfEnemies -= 0.1f;
             increasedPoints = false;
+            roundScore++;
         }
-        else if (score.value > 500 && !increasedPoints && score.value % 500 == 0)
+        else if (score.value > 500 && !increasedPoints && score.value >= roundScore*2000)
         {
             points++;
             increasedPoints = true;
+            roundScore++;
         }
     }
 
@@ -134,6 +140,9 @@ public class game_master_script : MonoBehaviour
                 {
                     spendingPoints -= browsing;
                     MovementSpawnEnemy(browsing - 1);
+                    Debug.Log(browsing);
+                    yield return new WaitForSeconds(Random.range(0.1f, 3f)*rateOfEnemies);
+                    
                 }
             }
         }

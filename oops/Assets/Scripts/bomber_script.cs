@@ -46,6 +46,10 @@ public class bomber_script : MonoBehaviour
         {
             GM.GetComponent<game_master_script>().IncreaseScore(100);
             explode();
+            if (Random.Range(0, HpDroprate.oddsOfDrop) == 1)
+            {
+                Instantiate(HPpickup, transform.position, Quaternion.identity);
+            }
         }
     }
 
@@ -86,10 +90,7 @@ public class bomber_script : MonoBehaviour
     void die()
     {
         Instantiate(DeathEffects, transform.position, Quaternion.identity);
-        if(Random.Range(0, HpDroprate.oddsOfDrop) == 1)
-        {
-            Instantiate(HPpickup, transform.position, Quaternion.identity);
-        }
+        
         Destroy(gameObject);
     }
 }

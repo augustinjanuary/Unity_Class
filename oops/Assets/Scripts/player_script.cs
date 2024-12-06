@@ -15,6 +15,7 @@ public class player_script : MonoBehaviour
     public int dashCooldown = 0;
     public int shootCooldown = 10;
     public float speed = 5.0f;
+    public Vector2 input;
 
     public TrailRenderer[] tr = new TrailRenderer[3];
 
@@ -34,10 +35,15 @@ public class player_script : MonoBehaviour
     public Vector3 negativeBounds;
 
     public int playerHealth;
-
+    int healthMax = 100;
     // Start is called before the first frame update
     void Start()
     {
+        if (scoreScript.health <= 0)
+        {
+            scoreScript.health = healthMax;
+            playerHealth = healthMax;
+        }
         playerHealth = scoreScript.health;
 
         HealthBar = GameObject.FindWithTag("HealthBar");
@@ -55,12 +61,16 @@ public class player_script : MonoBehaviour
             StartCoroutine(drainHealth());
         }
         
+
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         scoreScript.health = playerHealth;
+        playerHealth = Mathf.Clamp(playerHealth, 0, healthMax);
+
+        input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         if (dashCooldown > 0)
         {
@@ -94,27 +104,28 @@ public class player_script : MonoBehaviour
         angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
-
-
         //Teleport
-        if ((Input.GetAxisRaw("Fire1") != 0) && (dashCooldown <= 0))
+        if ((Input.GetAxisRaw("Fire3") != 0) && (dashCooldown <= 0) && (direction != Vector3.zero))
         {
-
             StartCoroutine(teleportAnimation());
             Instantiate(TP_effect, transform.position, Quaternion.identity);
 
-            transform.position = transform.position + Vector3.ClampMagnitude(new Vector3(mousePos.x, mousePos.y, 0f).normalized * jumpDistance, 5.0f);
+            transform.position = transform.position + Vector3.ClampMagnitude(direction.normalized * jumpDistance, 5.0f);
             dashCooldown = dashCooldownLength;
-
-
         }
 
-        if ((Input.GetAxisRaw("Jump") != 0) && shootCooldown <= 0) {
+        
+        if ((Input.GetAxisRaw("Fire1 ") != 0) && shootCooldown <= 0) {
             shootCooldown = 10;
             shoot();
         }
         HealthBar.GetComponent<Image>().fillAmount = (float)playerHealth / 100;
         HealthBarValue.GetComponent<TMP_Text>().text = playerHealth.ToString();
+
+        if (playerHealth <= 0)
+        {
+            death();
+        }
     }
 
     public void CalculateScreenBoundaries()
@@ -156,6 +167,14 @@ public class player_script : MonoBehaviour
         playerHealth -=1;
         StartCoroutine(drainHealth());
     }
+
+    void death()
+    {
+        //death fx here
+        transform.position = new Vector3(0f, -20f, 0f);
+        GetComponent<player_script>().enabled = false;
+    }
+
 }
 
 

@@ -28,6 +28,7 @@ public class shooter_script : MonoBehaviour
         Player = GameObject.FindWithTag("Player");
         GM = GameObject.FindWithTag("GameController");
         ChargeUpEffect = GetComponentInChildren<ParticleSystem>();
+        
     }
 
     // Update is called once per frame

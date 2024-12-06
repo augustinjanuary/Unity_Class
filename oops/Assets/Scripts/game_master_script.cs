@@ -16,7 +16,7 @@ public class game_master_script : MonoBehaviour
     public int roundScore = 1;
 
     string scene;
-    int availableEnemys = 0;
+    public int availableEnemys = 0;
 
     bool shooter = false;
     bool bomber = false;
@@ -82,14 +82,14 @@ public class game_master_script : MonoBehaviour
     public void IncreaseScore(int valueToAdd) {
         score.value += valueToAdd;
 
-        if (score.value > 3000 && !bomber)
+        if ((score.value) > 3000 && !bomber && shooter)
         {
             availableEnemys = 2;
             MovementSpawnEnemy(2);
             bomber = true;
             roundScore++;
         }
-        else if (score.value > 2500 && !shooter)
+        else if ((score.value > 2500) && !shooter)
         {
             availableEnemys = 1;
             MovementSpawnEnemy(1);
@@ -102,7 +102,7 @@ public class game_master_script : MonoBehaviour
             increasedPoints = false;
             roundScore++;
         }
-        else if (score.value > 500 && !increasedPoints && score.value >= roundScore*2000)
+        else if (score.value > 500 && (!increasedPoints || rateOfEnemies <= 1f) && score.value >= roundScore*2000)
         {
             points++;
             increasedPoints = true;
@@ -134,14 +134,17 @@ public class game_master_script : MonoBehaviour
 
         while (spendingPoints > 0)
         {
-            int browsing = Random.Range(0, availableEnemys+1)+1;
-            if (spendingPoints - browsing >= 0) {
+            int browsing = Random.Range(0, availableEnemys+1);
+            if(browsing == 2)
+            {
+                Debug.Log(browsing);
+            }
+            if (spendingPoints - (browsing + 1) >= 0) {
                 if(Random.Range(0, 2) == 0)
                 {
-                    spendingPoints -= browsing;
-                    MovementSpawnEnemy(browsing - 1);
-                    Debug.Log(browsing);
-                    yield return new WaitForSeconds(Random.range(0.1f, 3f)*rateOfEnemies);
+                    spendingPoints -= browsing+1;
+                    MovementSpawnEnemy(browsing);
+                    yield return new WaitForSeconds(Random.Range(0f, 3f)*rateOfEnemies);
                     
                 }
             }

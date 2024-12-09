@@ -115,7 +115,7 @@ public class player_script : MonoBehaviour
         }
 
         
-        if ((Input.GetAxisRaw("Fire1 ") != 0) && shootCooldown <= 0) {
+        if ((Input.GetAxisRaw("Fire1") != 0) && shootCooldown <= 0) {
             shootCooldown = 10;
             shoot();
         }

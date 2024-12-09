@@ -37,6 +37,7 @@ public class game_master_script : MonoBehaviour
             scene = "Initial Scene";
             StartCoroutine(enemySpawnPurchasingList());
             InvokeRepeating("TimeAliveBonus", 10f, 10f);
+            score.value = 0;
         }
         _player = GameObject.FindWithTag("Player");
         score_value = GameObject.FindWithTag("ScoreValue");
@@ -56,6 +57,13 @@ public class game_master_script : MonoBehaviour
     }
 
     void InitialSpawnEnemy(){
+        if(score.value >= 2000)
+        {
+            //here's where I'd put my animation scene
+            //IF I HAD ONE
+            SceneManager.LoadScene(scene);
+        }
+
         Vector3 pos = new Vector3(Random.Range(-xBorder, xBorder), yBorder, 1f);
         Instantiate(NPCs[1], pos, Quaternion.identity);
     }
@@ -96,13 +104,13 @@ public class game_master_script : MonoBehaviour
             shooter = true;
             roundScore++;
         }
-        else if (score.value > 500 && increasedPoints && score.value >= roundScore*2000)
+        else if (score.value > 2000 && (increasedPoints && rateOfEnemies >= 0f) && score.value >= roundScore*500)
         {
             rateOfEnemies -= 0.1f;
             increasedPoints = false;
             roundScore++;
         }
-        else if (score.value > 500 && (!increasedPoints || rateOfEnemies <= 1f) && score.value >= roundScore*2000)
+        else if (score.value > 2000 && (!increasedPoints || rateOfEnemies <= 0f) && score.value >= roundScore*500)
         {
             points++;
             increasedPoints = true;
@@ -144,7 +152,7 @@ public class game_master_script : MonoBehaviour
                 {
                     spendingPoints -= browsing+1;
                     MovementSpawnEnemy(browsing);
-                    yield return new WaitForSeconds(Random.Range(0f, 3f)*rateOfEnemies);
+                    yield return new WaitForSeconds(Random.Range(0f, rateOfEnemies + 1));
                     
                 }
             }

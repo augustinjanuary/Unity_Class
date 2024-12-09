@@ -60,7 +60,6 @@ public class player_script : MonoBehaviour
             Camera.main.orthographicSize = 7f;
             StartCoroutine(drainHealth());
         }
-        
 
     }
 

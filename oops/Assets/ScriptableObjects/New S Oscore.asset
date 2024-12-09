@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 004e2a195b455b54884a72fe4eaf58aa, type: 3}
   m_Name: New S Oscore
   m_EditorClassIdentifier: 
-  value: 0
-  health: 89
+  value: 100
+  health: 37
   oddsOfDrop: 10

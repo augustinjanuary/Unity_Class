@@ -28,6 +28,7 @@ public class play_button_script : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             score.value = 0;
+            score.health = 100;
         }
         SceneManager.LoadScene(sceneIndex);
         Debug.Log(sceneIndex);

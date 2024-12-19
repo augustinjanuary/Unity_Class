@@ -247,7 +247,7 @@ MonoBehaviour:
   healthPoints: 7
   rotateSpeed: 5
   Bullet: {fileID: 2932350105360764163, guid: 9cf0e48ec29a98440a7b359b193e1bd2, type: 3}
-  DeathEffects: {fileID: 1758320389217124572, guid: aed6fe7dcb9c52d4595d5c0595ca6e63, type: 3}
+  DeathEffects: {fileID: 1758320389217124572, guid: f927a067be7abca4aa1fec01aefc9ee2, type: 3}
   HPpickup: {fileID: 883472774253160520, guid: f002714d30c235d4b954798dde845956, type: 3}
   Shield: {fileID: 7803407436844761574, guid: 5f3971c8143dc2d49a47cc7b840e1066, type: 3}
   EXP_point:

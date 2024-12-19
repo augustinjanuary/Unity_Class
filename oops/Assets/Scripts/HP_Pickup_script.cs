@@ -17,8 +17,8 @@ public class HP_Pickup_script : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log(other.gameObject.tag);
             other.GetComponent<player_script>().playerHealth += 10;
+            other.GetComponent<AudioSource>().Play();
             Destroy(gameObject);
         }
     }

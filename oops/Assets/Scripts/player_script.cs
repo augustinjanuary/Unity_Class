@@ -23,6 +23,7 @@ public class player_script : MonoBehaviour
     public GameObject Muzzle_One;
     public GameObject Muzzle_Two;
     public GameObject TP_effect;
+    public GameObject death_effect;
     GameObject HealthBar;
     GameObject HealthBarValue;
     GameObject Fade;
@@ -171,7 +172,7 @@ public class player_script : MonoBehaviour
 
     IEnumerator death()
     {
-        //death fx here
+        Instantiate(death_effect, transform.position, Quaternion.identity);
         transform.position = new Vector3(0f, -20f, 0f);
         GetComponent<player_script>().enabled = false;
         yield return new WaitForSeconds(2f);

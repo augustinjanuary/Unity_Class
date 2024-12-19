@@ -11,6 +11,7 @@ public class enemy_script : MonoBehaviour
     public SOscore HpDroprate;
 
     public GameObject HPpickup;
+    public GameObject death_effects;
 
     GameObject Player;
     Rigidbody rbody;
@@ -36,13 +37,14 @@ public class enemy_script : MonoBehaviour
         if(healthPoints <= 0)
         {
             GM.GetComponent<game_master_script>().IncreaseScore(100);
-            Destroy(gameObject);
+            Instantiate(death_effects, transform.position, Quaternion.identity);
 
             if (Random.Range(0, HpDroprate.oddsOfDrop) == 1)
             {
                 Instantiate(HPpickup, transform.position, Quaternion.identity);
             }
 
+            Destroy(gameObject);
         }
     }
 

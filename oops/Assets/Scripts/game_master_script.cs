@@ -15,7 +15,6 @@ public class game_master_script : MonoBehaviour
     public int points = 3;
     public int roundScore = 1;
 
-    int sceneBuildIndex;
     public int availableEnemys = 0;
 
     bool shooter = false;
@@ -30,12 +29,10 @@ public class game_master_script : MonoBehaviour
     void Start()
     {
         if(SceneManager.GetActiveScene().buildIndex == 1){
-            sceneBuildIndex = 2;
             InvokeRepeating("InitialSpawnEnemy", 2f, 2f);
         } 
         else
         {
-            sceneBuildIndex = 1;
             StartCoroutine(enemySpawnPurchasingList());
             InvokeRepeating("TimeAliveBonus", 10f, 10f);
         }

@@ -16,8 +16,6 @@ public class shooter_script : MonoBehaviour
     public GameObject Muzzle;
     public GameObject DeathEffects;
     public GameObject HPpickup;
-    AudioSource audioSource;
-    public AudioClip audioClip;
 
     ParticleSystem ChargeUpEffect;
 
@@ -30,8 +28,6 @@ public class shooter_script : MonoBehaviour
         Player = GameObject.FindWithTag("Player");
         GM = GameObject.FindWithTag("GameController");
         ChargeUpEffect = GetComponentInChildren<ParticleSystem>();
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = audioClip;
     }
 
     // Update is called once per frame
@@ -66,7 +62,6 @@ public class shooter_script : MonoBehaviour
         if (healthPoints <= 0)
         {
             GM.GetComponent<game_master_script>().IncreaseScore(100);
-            audioSource.clip = audioClip;
             Instantiate(DeathEffects, transform.position, Quaternion.identity);
 
             if (Random.Range(0, HpDroprate.oddsOfDrop) == 0)
@@ -96,7 +91,6 @@ public class shooter_script : MonoBehaviour
 
         ChargeUpEffect.GetComponent <AudioSource>().Stop();
         Instantiate(EnemyBullet, Muzzle.transform.position, Muzzle.transform.rotation);
-        audioSource.Play();
         shooting = false;
         emission.enabled = false;
         

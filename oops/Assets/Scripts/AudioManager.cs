@@ -19,7 +19,14 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(this);
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("Audio");
+
+        if (objs.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Start()
@@ -35,11 +42,6 @@ public class AudioManager : MonoBehaviour
             PlayScheduledClip();
         }
 
-        if(Input.GetKeyUp(KeyCode.Escape))
-        {
-            trackList++;
-            changeTrack(trackList);
-        }
     }
 
     private void PlayScheduledClip()

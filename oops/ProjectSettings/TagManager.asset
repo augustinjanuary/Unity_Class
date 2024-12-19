@@ -12,6 +12,10 @@ TagManager:
   - EnemyBullet
   - Bomber
   - HPpickup
+  - Fade
+  - Below3K
+  - Above3K
+  - Audio
   layers:
   - Default
   - TransparentFX
@@ -21,7 +25,7 @@ TagManager:
   - UI
   - Player
   - Background
-  - 
+  - Fade
   - 
   - 
   - 

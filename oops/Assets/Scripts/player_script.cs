@@ -25,6 +25,7 @@ public class player_script : MonoBehaviour
     public GameObject TP_effect;
     GameObject HealthBar;
     GameObject HealthBarValue;
+    GameObject Fade;
 
     public float angle;
 
@@ -48,6 +49,7 @@ public class player_script : MonoBehaviour
 
         HealthBar = GameObject.FindWithTag("HealthBar");
         HealthBarValue = GameObject.FindWithTag("HealthBarValue");
+        Fade = GameObject.FindWithTag("Fade");
 
         dashCooldown = 0;
         if (SceneManager.GetActiveScene().name == "Initial Scene") {
@@ -123,7 +125,7 @@ public class player_script : MonoBehaviour
 
         if (playerHealth <= 0)
         {
-            death();
+            StartCoroutine(death());
         }
     }
 
@@ -167,11 +169,13 @@ public class player_script : MonoBehaviour
         StartCoroutine(drainHealth());
     }
 
-    void death()
+    IEnumerator death()
     {
         //death fx here
         transform.position = new Vector3(0f, -20f, 0f);
         GetComponent<player_script>().enabled = false;
+        yield return new WaitForSeconds(2f);
+        Fade.GetComponent<fadeInOut>().FadeOut(4);
     }
 
 }

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class play_button_script : MonoBehaviour
 {    
     [SerializeField]
-    public string scene;
+    public int sceneIndex;
     public SOscore score;
 
     // Start is called before the first frame update
@@ -25,9 +25,12 @@ public class play_button_script : MonoBehaviour
 
     void TaskOnClick(){
         Debug.Log("woo!");
-        score.value = 0;
-        SceneManager.LoadScene(scene);
-        Debug.Log(scene);
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            score.value = 0;
+        }
+        SceneManager.LoadScene(sceneIndex);
+        Debug.Log(sceneIndex);
 
     }
 }

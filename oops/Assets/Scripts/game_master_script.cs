@@ -15,7 +15,7 @@ public class game_master_script : MonoBehaviour
     public int points = 3;
     public int roundScore = 1;
 
-    string scene;
+    int sceneBuildIndex;
     public int availableEnemys = 0;
 
     bool shooter = false;
@@ -23,24 +23,26 @@ public class game_master_script : MonoBehaviour
     bool increasedPoints = false;
 
     public SOscore score;
+    public GameObject fade;
 
 
     // Start is called before the first frame update
     void Start()
     {
         if(SceneManager.GetActiveScene().buildIndex == 1){
-            scene = "Moving camera scene";
+            sceneBuildIndex = 2;
             InvokeRepeating("InitialSpawnEnemy", 2f, 2f);
         } 
         else
         {
-            scene = "Initial Scene";
+            sceneBuildIndex = 1;
             StartCoroutine(enemySpawnPurchasingList());
             InvokeRepeating("TimeAliveBonus", 10f, 10f);
-            score.value = 0;
         }
+
         _player = GameObject.FindWithTag("Player");
         score_value = GameObject.FindWithTag("ScoreValue");
+        fade = GameObject.FindWithTag("Fade");
 
         xBorder = _player.GetComponent<player_script>().screenBounds.x + 5;
         yBorder = _player.GetComponent<player_script>().screenBounds.y + 5;
@@ -51,17 +53,18 @@ public class game_master_script : MonoBehaviour
     {
         score_value.GetComponent<TMP_Text>().text = score.value.ToString();
 
-        if(Input.GetKeyDown(KeyCode.Escape)){
-            SceneManager.LoadScene(scene);
-        }
+       
     }
 
     void InitialSpawnEnemy(){
         if(score.value >= 2000)
         {
+            //Stops the player from getting hit while fading
+            _player.GetComponent<BoxCollider>().enabled = false;
             //here's where I'd put my animation scene
             //IF I HAD ONE
-            SceneManager.LoadScene(scene);
+            
+            fade.GetComponent<fadeInOut>().FadeOut(3);
         }
 
         Vector3 pos = new Vector3(Random.Range(-xBorder, xBorder), yBorder, 1f);
@@ -70,7 +73,7 @@ public class game_master_script : MonoBehaviour
 
     void MovementSpawnEnemy(int index){
         Vector3 pos = Vector3.zero;
-        switch(Random.Range(0, 3)){
+        switch(Random.Range(0, 4)){
             case 0:
                 pos = new Vector3(-xBorder, Random.Range(-yBorder, yBorder), 1f);
                 break;

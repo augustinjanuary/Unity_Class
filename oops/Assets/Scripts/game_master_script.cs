@@ -34,15 +34,13 @@ public class game_master_script : MonoBehaviour
         else
         {
             StartCoroutine(enemySpawnPurchasingList());
-            InvokeRepeating("TimeAliveBonus", 10f, 10f);
+            StartCoroutine(TimeAliveBonus());
         }
 
         _player = GameObject.FindWithTag("Player");
         score_value = GameObject.FindWithTag("ScoreValue");
         fade = GameObject.FindWithTag("Fade");
 
-        xBorder = _player.GetComponent<player_script>().screenBounds.x + 5;
-        yBorder = _player.GetComponent<player_script>().screenBounds.y + 5;
     }
 
     // Update is called once per frame
@@ -50,7 +48,9 @@ public class game_master_script : MonoBehaviour
     {
         score_value.GetComponent<TMP_Text>().text = score.value.ToString();
 
-       
+
+        xBorder = _player.GetComponent<player_script>().screenBounds.x + 5;
+        yBorder = _player.GetComponent<player_script>().screenBounds.y + 5;
     }
 
     void InitialSpawnEnemy(){
@@ -118,9 +118,11 @@ public class game_master_script : MonoBehaviour
         }
     }
 
-    void TimeAliveBonus()
+    IEnumerator TimeAliveBonus()
     {
+        yield return new WaitForSeconds(2f);
         IncreaseScore(10);
+        StartCoroutine(TimeAliveBonus());
     }
 
     IEnumerator enemySpawnPurchasingList()

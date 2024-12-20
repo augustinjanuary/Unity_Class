@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!114 &11400000
 MonoBehaviour:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 32
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: New S Oscore
   m_EditorClassIdentifier: 
   value: 0
-  health: 0
+  health: 100
   oddsOfDrop: 10

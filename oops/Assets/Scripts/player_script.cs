@@ -173,8 +173,9 @@ public class player_script : MonoBehaviour
     IEnumerator death()
     {
         Instantiate(death_effect, transform.position, Quaternion.identity);
-        transform.position = new Vector3(0f, -20f, 0f);
         GetComponent<player_script>().enabled = false;
+        Transform shipModel = transform.GetChild(4);
+        shipModel.gameObject.SetActive(false);
         yield return new WaitForSeconds(2f);
         Fade.GetComponent<fadeInOut>().FadeOut(4);
     }
